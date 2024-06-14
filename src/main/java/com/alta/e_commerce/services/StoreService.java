@@ -34,8 +34,8 @@ public class StoreService {
     @Autowired
     private ValidationService validationService;
 
-    @Autowired
-    private JwtService jwtService;
+    //@Autowired
+    //private JwtService jwtService;
 
     @Transactional
     public StoreResponse create(StoreRequest request){

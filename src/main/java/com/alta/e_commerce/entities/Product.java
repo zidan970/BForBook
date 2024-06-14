@@ -1,6 +1,7 @@
 package com.alta.e_commerce.entities;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,4 +41,7 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false, referencedColumnName = "storeId")
     private Store store;
+
+    @OneToMany(mappedBy = "product")
+    private List<CartItem> cartItems;
 }

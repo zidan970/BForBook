@@ -1,6 +1,7 @@
 package com.alta.e_commerce.entities;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Table(name = "stores")
 @Entity
@@ -18,6 +19,9 @@ public class Store {
     @OneToOne
     @JoinColumn(name = "user_id", unique = true, referencedColumnName = "userId")
     private User user;
+
+    @OneToMany(mappedBy = "store")
+    private List<Product> products;
 
     public String getStoreId() {
         return storeId;
@@ -52,6 +56,15 @@ public class Store {
 
     public Store setUser(User user) {
         this.user = user;
+        return this;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public Store setProducts(List<Product> products) {
+        this.products = products;
         return this;
     }
 }

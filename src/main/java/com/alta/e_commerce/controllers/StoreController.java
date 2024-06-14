@@ -1,6 +1,5 @@
 package com.alta.e_commerce.controllers;
 
-import com.alta.e_commerce.services.AuthenticationService;
 import com.alta.e_commerce.services.StoreService;
 import com.alta.e_commerce.entities.User;
 import com.alta.e_commerce.models.*;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class StoreController {
-    private static final Logger log = LoggerFactory.getLogger(StoreController.class);
+    //private static final Logger log = LoggerFactory.getLogger(StoreController.class);
 
     @Autowired
     private StoreService storeService;
@@ -29,13 +28,10 @@ public class StoreController {
     public WebResponse<StoreResponse> create(@RequestBody StoreRequest request){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         User genzaiNoShiyousha = (User) authentication.getPrincipal();
-
         System.out.println("your id: " + genzaiNoShiyousha.getUserId());
         
         request.setUserId(genzaiNoShiyousha.getUserId()); // Menggunakan setter untuk mengatur userId
-
         System.out.println("id request: " + request.getUserId());
 
         StoreResponse storeResponse = storeService.create(request);

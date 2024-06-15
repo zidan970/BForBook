@@ -44,4 +44,13 @@ public class OrderService {
             .status(order.getStatus())
             .build();
     }
+
+    @Transactional
+    public Order findOrderId(String cartId){
+        // check whether the order exists or not
+        Order order = orderRepository.findByCart_CartId(cartId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "order's not found"));
+
+        return order;
+    }
 }

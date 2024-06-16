@@ -23,11 +23,21 @@ public class CartService {
     private CartRepository cartRepository;
 
     @Transactional
-    public String findCartId(String userId){
+    public String findOrCreateCart(String userId){
         // check whether the cart exists or not. 
         // If it doesn't exist, it will be created directly in the create method
         Cart cart = cartRepository.findByUserIdAndStatusOnGoing(userId)
             .orElseGet(() -> create(userId));
+
+        return cart.getCartId();
+    }
+
+    @Transactional
+    public String findCartId(String userId){
+        // check whether the cart exists or not. 
+        // If it doesn't exist, it will be created directly in the create method
+        Cart cart = cartRepository.findById(userId)
+            .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"cart is not found"));
 
         return cart.getCartId();
     }

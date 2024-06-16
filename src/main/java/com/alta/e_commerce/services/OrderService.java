@@ -53,4 +53,13 @@ public class OrderService {
 
         return order;
     }
+
+    @Transactional
+    public Order findOrder(String orderId){
+        // check whether the order exists or not
+        Order order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "order's not found"));
+
+        return order;
+    }
 }

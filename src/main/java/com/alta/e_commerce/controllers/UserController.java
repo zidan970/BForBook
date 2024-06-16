@@ -6,16 +6,19 @@ import com.alta.e_commerce.models.WebResponse;
 import com.alta.e_commerce.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 public class UserController {
-        
+
     @Autowired
     private UserService userService;
 
@@ -28,9 +31,9 @@ public class UserController {
         UserResponse user = userService.toUserResponse(currentUser);
 
         return WebResponse.<UserResponse>builder()
-            .message("this is your profile:")
-            .data(user)
-            .build();
+                .message("this is your profile:")
+                .data(user)
+                .build();
     }
 
     @GetMapping("/users")
@@ -40,8 +43,22 @@ public class UserController {
         List<UserResponse> user = userService.toListUserResponse(users);
 
         return WebResponse.<List<UserResponse>>builder()
-            .message("all registered users:")
-            .data(user)
-            .build();
+                .message("all registered users:")
+                .data(user)
+                .build();
+    }
+
+    @DeleteMapping(
+            path = "/users",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String> delete() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User genzaiNoShiyousha = (User) authentication.getPrincipal();
+        
+        userService.delete(genzaiNoShiyousha.getUserId());
+        return WebResponse.<String>builder()
+                .message("success delete data")
+                .build();
     }
 }

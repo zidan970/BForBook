@@ -3,7 +3,9 @@ package com.alta.e_commerce.services;
 import com.alta.e_commerce.entities.User;
 import com.alta.e_commerce.models.UserResponse;
 import com.alta.e_commerce.repositories.UserRepository;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -42,5 +44,13 @@ public class UserService {
         return users.stream()
             .map(this::toUserResponse)
             .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void delete(String userId){
+        User user = userRepository.findById(userId)
+            .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "user's not found"));
+
+        userRepository.delete(user);
     }
 }

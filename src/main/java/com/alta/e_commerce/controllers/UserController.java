@@ -1,38 +1,47 @@
 package com.alta.e_commerce.controllers;
 
 import com.alta.e_commerce.entities.User;
+import com.alta.e_commerce.models.UserResponse;
+import com.alta.e_commerce.models.WebResponse;
 import com.alta.e_commerce.services.UserService;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RequestMapping("/users")
 @RestController
 public class UserController {
-    private final UserService userService;
+        
+    @Autowired
+    private UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @GetMapping("/me")
-    public ResponseEntity<User> authenticatedUser() {
+    @GetMapping("/user")
+    public WebResponse<UserResponse> getMyProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         User currentUser = (User) authentication.getPrincipal();
 
-        return ResponseEntity.ok(currentUser);
+        UserResponse user = userService.toUserResponse(currentUser);
+
+        return WebResponse.<UserResponse>builder()
+            .message("this is your profile:")
+            .data(user)
+            .build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<User>> allUsers() {
-        List <User> users = userService.allUsers();
+    @GetMapping("/users")
+    public WebResponse<List<UserResponse>> getAllProfiles() {
+        List<User> users = userService.allUsers();
 
-        return ResponseEntity.ok(users);
+        List<UserResponse> user = userService.toListUserResponse(users);
+
+        return WebResponse.<List<UserResponse>>builder()
+            .message("all registered users:")
+            .data(user)
+            .build();
     }
 }

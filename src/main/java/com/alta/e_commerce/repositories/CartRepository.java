@@ -11,6 +11,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CartRepository extends JpaRepository<Cart, String> {
     Optional<Cart> findByCartId(String cartId);
-    @Query("SELECT c FROM Cart c WHERE c.user.userId = :userId AND c.status = 'On Going'")
+
+    @Query(
+        "select c from Cart c where c.user.userId = :userId and c.status = 'On Going'"
+    )
     Optional<Cart> findByUserIdAndStatusOnGoing(@Param("userId") String userId);
 }

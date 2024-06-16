@@ -10,6 +10,7 @@ import com.alta.e_commerce.entities.Cart;
 import com.alta.e_commerce.entities.Order;
 import com.alta.e_commerce.models.OrderRequest;
 import com.alta.e_commerce.models.OrderResponse;
+import com.alta.e_commerce.models.HistoryRequest;
 import com.alta.e_commerce.repositories.CartRepository;
 import com.alta.e_commerce.repositories.OrderRepository;
 import java.util.*;
@@ -61,5 +62,13 @@ public class OrderService {
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "order's not found"));
 
         return order;
+    }
+
+    @Transactional
+    public List<HistoryRequest> listHistory(String userId) {
+        // get orders by userId
+        List<HistoryRequest> orders = orderRepository.findHistories(userId);
+
+        return orders;
     }
 }

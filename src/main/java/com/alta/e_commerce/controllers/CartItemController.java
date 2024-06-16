@@ -43,7 +43,7 @@ public class CartItemController {
         System.out.println("your id: " + genzaiNoShiyousha.getUserId());
 
         // find cart with current user id! if there is one, then get the cart id!
-        String cartId = cartService.findCartId(genzaiNoShiyousha.getUserId());
+        String cartId = cartService.findOrCreateCart(genzaiNoShiyousha.getUserId());
 
         System.out.println("id cart: " + cartId);
         System.out.println("id product: " + productId);

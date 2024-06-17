@@ -3,6 +3,7 @@ package com.alta.e_commerce.controllers;
 import com.alta.e_commerce.entities.User;
 import com.alta.e_commerce.models.UserResponse;
 import com.alta.e_commerce.models.WebResponse;
+import com.alta.e_commerce.models.UpdateUserRequest;
 import com.alta.e_commerce.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -60,5 +62,22 @@ public class UserController {
         return WebResponse.<String>builder()
                 .message("success delete data")
                 .build();
+    }
+
+    @PutMapping(
+        path = "/users",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<UserResponse> update(@RequestBody UpdateUserRequest request){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User genzaiNoShiyousha = (User) authentication.getPrincipal();
+
+        request.setUserId(genzaiNoShiyousha.getUserId());
+
+        UserResponse userResponse = userService.update(request);
+        return WebResponse.<UserResponse>builder()
+            .message("success update data")
+            .data(userResponse)
+            .build();
     }
 }

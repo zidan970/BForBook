@@ -6,15 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alta.e_commerce.entities.User;
+import com.alta.e_commerce.entities.Product;
 import com.alta.e_commerce.models.ProductRequest;
 import com.alta.e_commerce.models.ProductResponse;
+import com.alta.e_commerce.models.UserResponse;
 import com.alta.e_commerce.models.WebResponse;
 import com.alta.e_commerce.services.ProductService;
+
+import java.util.List;
 
 @RestController
 public class ProductController {
@@ -35,13 +41,48 @@ public class ProductController {
         User genzaiNoShiyousha = (User) authentication.getPrincipal();
         System.out.println("your id: " + genzaiNoShiyousha.getUserId());
 
-        // request.setUserId(genzaiNoShiyousha.getUserId()); // Menggunakan setter untuk mengatur userId
-        // System.out.println("id request: " + request.getUserId());
-
         ProductResponse productResponse = productService.create(genzaiNoShiyousha.getUserId(), request);
         return WebResponse.<ProductResponse>builder()
                 .message("success create product")
                 .data(productResponse)
+                .build();
+    }
+
+    @GetMapping(
+            path = "/products/{productId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<ProductResponse> getBookById(@PathVariable("productId") String productId){
+        ProductResponse product = productService.getSingleProduct(productId);
+        return WebResponse.<ProductResponse>builder()
+                .message("book's data:")
+                .data(product)
+                .build();
+    }
+
+    @GetMapping("/products/store")
+    public WebResponse<List<ProductResponse>> getProductsOfStore() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User genzaiNoShiyousha = (User) authentication.getPrincipal();
+        System.out.println("your id: " + genzaiNoShiyousha.getUserId());
+
+        List<ProductResponse> productResponse = productService.getMyProducts(genzaiNoShiyousha.getUserId());
+
+        return WebResponse.<List<ProductResponse>>builder()
+                .message("books of my store:")
+                .data(productResponse)
+                .build();
+    }
+
+    @GetMapping("/products/all")
+    public WebResponse<List<ProductResponse>> getAllProducts() {
+        List<Product> products = productService.allProducts();
+
+        List<ProductResponse> allProducts = productService.toListProductResponse(products);
+
+        return WebResponse.<List<ProductResponse>>builder()
+                .message("all books:")
+                .data(allProducts)
                 .build();
     }
 }

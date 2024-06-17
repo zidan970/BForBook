@@ -111,4 +111,13 @@ public class ProductService {
 
         return products;
     }
+
+    @Transactional
+    public void delete(String productId){
+        // pastikan book nya ada
+        Product product = productRepository.findById(productId)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "book's not found"));
+
+        productRepository.delete(product);
+    }
 }

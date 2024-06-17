@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -85,4 +86,16 @@ public class ProductController {
                 .data(allProducts)
                 .build();
     }
+
+    @DeleteMapping(
+        path = "/products/{productId}",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public WebResponse<String> delete(@PathVariable("productId") String productId){
+    productService.delete(productId);
+    return WebResponse.<String>builder()
+            .message("success delete product")
+            .build();
+}
+
 }

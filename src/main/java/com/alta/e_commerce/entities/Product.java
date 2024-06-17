@@ -42,6 +42,6 @@ public class Product {
     @JoinColumn(name = "store_id", nullable = false, referencedColumnName = "storeId")
     private Store store;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems;
 }

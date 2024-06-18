@@ -3,8 +3,6 @@ package com.alta.e_commerce.controllers;
 import com.alta.e_commerce.services.StoreService;
 import com.alta.e_commerce.entities.User;
 import com.alta.e_commerce.models.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class StoreController {
-    //private static final Logger log = LoggerFactory.getLogger(StoreController.class);
 
     @Autowired
     private StoreService storeService;

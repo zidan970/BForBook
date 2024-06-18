@@ -49,7 +49,7 @@ public class StoreService {
 
         Store store = new Store();
         store.setStoreId(UUID.randomUUID().toString());
-        //store.getUser().setUserId(request.getUserId()); // nggak bisa dipanggil, karena isi dari getUser null
+        //store.getUser().setUserId(request.getUserId()); // cannot be called, getUser is null
         store.setStoreName(request.getStoreName());
         store.setStoreAddress(request.getStoreAddress());
         //store.setUser(user);
@@ -62,7 +62,7 @@ public class StoreService {
 
         return StoreResponse.builder()
                 .storeId(store.getStoreId())
-                .userId(store.getUser().getUserId())        // bisa dipanggil
+                .userId(store.getUser().getUserId())        // can be called
                 .storeName(store.getStoreName())
                 .storeAddress(request.getStoreAddress())
                 .build();

@@ -1,7 +1,5 @@
 package com.alta.e_commerce.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -23,7 +21,6 @@ import com.alta.e_commerce.services.PaymentService;
 
 @RestController
 public class PaymentController {
-    //private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
 
     @Autowired
     private CartService cartService;

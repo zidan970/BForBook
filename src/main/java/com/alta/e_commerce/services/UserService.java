@@ -76,4 +76,9 @@ public class UserService {
 
         return toUserResponse(user);
     }
+
+    @Transactional
+    public void savePhoto(User user){
+        userRepository.save(user);
+    }
 }
